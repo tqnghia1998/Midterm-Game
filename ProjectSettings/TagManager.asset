@@ -3,7 +3,21 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Brick
+  - Iron
+  - User
+  - Fast
+  - Big
+  - Armored
+  - BotSpawnPoint
+  - SpawnPoint
+  - UserBullet
+  - BotBullet
+  - FastTank
+  - BigTank
+  - ArmoredTank
+  - UserTank
   layers:
   - Default
   - TransparentFX
@@ -13,14 +27,14 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Brick
+  - Boundary
+  - Water
+  - Tank
+  - UserTank
+  - Bullet
+  - BotTank
+  - BotBullet
   - 
   - 
   - 
