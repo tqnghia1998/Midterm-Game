@@ -14,6 +14,11 @@ public class User : Movement
         rb2d = GetComponent<Rigidbody2D>();
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        rb2d.velocity = Vector3.zero;
+    }
+
     private void FixedUpdate()
     {
         // Nếu có độ dời ngang và chưa di chuyển

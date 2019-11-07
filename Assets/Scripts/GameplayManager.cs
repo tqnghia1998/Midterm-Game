@@ -10,7 +10,7 @@ public class GameplayManager : MonoBehaviour
     Image topCurtain, bottomCurtain, blackCurtain;
 
     [SerializeField]
-    Text stageNumberText, gameOverText;
+    Text stageNumberText, gameOverText, stageNumberTextIngame, livesLeft, fastTankLeft, bigTankLeft, armoredTankLeft;
 
     [SerializeField]
     RectTransform canvas;
@@ -23,6 +23,13 @@ public class GameplayManager : MonoBehaviour
     void Start ()
     {
         stageNumberText.text = "STAGE " + GameManager.stageNumber.ToString();
+        stageNumberTextIngame.text = "ST. " + GameManager.stageNumber.ToString();
+        livesLeft.text = "x" + GameManager.playerLives.ToString();
+
+        // Lấy danh sách còn lại
+        fastTankLeft.text = "x" + LevelManager.fastTanks.ToString();
+        bigTankLeft.text = "x" + LevelManager.bigTanks.ToString();
+        armoredTankLeft.text = "x" + LevelManager.armoredTanks.ToString();
 
         // Lấy reference
         botSpawnPoints = GameObject.FindGameObjectsWithTag("BotSpawnPoint");
@@ -48,6 +55,7 @@ public class GameplayManager : MonoBehaviour
             if (!stageStart)
             {
                 GameManager.playerLives--;
+                livesLeft.text = "x" + GameManager.playerLives.ToString();
             }
 
             stageStart = false;
@@ -62,7 +70,7 @@ public class GameplayManager : MonoBehaviour
 
     public void SpawnBot()
     {
-        if (LevelManager.smallTanks + LevelManager.fastTanks + LevelManager.bigTanks + LevelManager.armoredTanks > 0)
+        if (LevelManager.fastTanks + LevelManager.bigTanks + LevelManager.armoredTanks > 0)
         {
             if (botSpawnPoints.Length == 0)
             {
@@ -72,6 +80,9 @@ public class GameplayManager : MonoBehaviour
             int spawnPointIndex = Random.Range(0, botSpawnPoints.Length - 1);
             Animator anime = botSpawnPoints[spawnPointIndex].GetComponent<Animator>();
             anime.SetTrigger("Spawning");
+            fastTankLeft.text = "x" + LevelManager.fastTanks.ToString();
+            bigTankLeft.text = "x" + LevelManager.bigTanks.ToString();
+            armoredTankLeft.text = "x" + LevelManager.armoredTanks.ToString();
         }
         else
         {
@@ -98,7 +109,9 @@ public class GameplayManager : MonoBehaviour
         StartCoroutine(RevealTopStage());
         StartCoroutine(RevealBottomStage());
         yield return null;
-        InvokeRepeating("SpawnBot", LevelManager.spawnRate, LevelManager.spawnRate);
+        //TODO: NGHIATQ
+        //InvokeRepeating("SpawnBot", LevelManager.spawnRate, LevelManager.spawnRate);
+        SpawnBot();
         SpawnUser();
     }
 

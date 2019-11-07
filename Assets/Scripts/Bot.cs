@@ -93,6 +93,7 @@ public class Bot : Movement
     {
         // Khi gặp vật cản thì random hướng ngay lập tức (không cần chờ interval)
         RandomDirection();
+        rb2d.velocity = Vector3.zero;
     }
 
     // Dùng Fixed Update vì phải chờ tính toán xong

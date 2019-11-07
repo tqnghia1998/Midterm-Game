@@ -6,7 +6,7 @@ public class LevelManager : MonoBehaviour
 {
     [SerializeField]
     int fastTanksInThisLevel, bigTanksInThisLevel, armoredTanksInThisLevel, stageNumber;
-    public static int smallTanks, fastTanks, bigTanks, armoredTanks;
+    public static int fastTanks, bigTanks, armoredTanks;
 
     [SerializeField]
     float spawnRateInThisLevel = 5;
