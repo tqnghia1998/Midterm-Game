@@ -67,6 +67,12 @@ public class Spawner : MonoBehaviour
 
             int tankID = tankToSpawn[Random.Range(0, tankToSpawn.Count - 1)];
             tank = Instantiate(tanks[tankID], transform.position, transform.rotation);
+
+            // Random bonus tank
+            if (Random.value <= 0.5)
+            {
+                tank.GetComponent<BonusTank>().MakeBonusTank();
+            }
             
             // Giảm số lượng còn lại
             if (tankID == (int)tankType.fastTank)

@@ -65,6 +65,9 @@ public class Health : MonoBehaviour
             {
                  GameManager.armoredTankDestroyed++;
             }
+
+            // Create generate bonus
+            if (gameObject.GetComponent<BonusTank>().IsBonusTankCheck()) GPM.GenerateBonusCrate();
         }
 
         yield return new WaitForSeconds(0.5F);

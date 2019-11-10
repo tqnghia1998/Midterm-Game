@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 
 public class GameplayManager : MonoBehaviour
 {
@@ -15,7 +16,11 @@ public class GameplayManager : MonoBehaviour
     [SerializeField]
     RectTransform canvas;
 
+    [SerializeField]
+    GameObject[] bonusCrates;
+
     GameObject[] spawnPoints, botSpawnPoints;
+    Tilemap waterTilemap, steelTilemap;
 
     bool stageStart = false;
     bool tankReserveEmpty = false;
@@ -37,6 +42,9 @@ public class GameplayManager : MonoBehaviour
 
         stageStart = true;
         StartCoroutine(StartStage());
+
+        steelTilemap = GameObject.Find("Iron").GetComponent<Tilemap>();
+	    waterTilemap = GameObject.Find("Water").GetComponent<Tilemap>();
     }
 
     void Update()
@@ -45,6 +53,29 @@ public class GameplayManager : MonoBehaviour
         {
             GameManager.stageCleared = true;
             LevelCompleted();
+        }
+    }
+
+    bool IsInvalidBonusCratePosition(Vector3 cratePosition)
+    {
+        return waterTilemap.GetTile(waterTilemap.WorldToCell(cratePosition)) != null || steelTilemap.GetTile(steelTilemap.WorldToCell(cratePosition)) != null;
+    }
+
+    public void GenerateBonusCrate()
+    {
+        GameObject bonusCrate = bonusCrates[Random.Range(0, bonusCrates.Length - 1)];
+        Vector3 cratePosition = new Vector3(Random.Range(-12, 12), Random.Range(-12, 13), 0);
+        if (IsInvalidBonusCratePosition(cratePosition))
+        {
+            do
+            {
+                cratePosition = new Vector3(Random.Range(-12, 12), Random.Range(-12, 13), 0);
+                if (!IsInvalidBonusCratePosition(cratePosition)) Instantiate(bonusCrate, cratePosition, Quaternion.identity);
+            } while (IsInvalidBonusCratePosition(cratePosition));
+        }
+        else
+        {
+            Instantiate(bonusCrate, cratePosition, Quaternion.identity);
         }
     }
 
@@ -109,9 +140,7 @@ public class GameplayManager : MonoBehaviour
         StartCoroutine(RevealTopStage());
         StartCoroutine(RevealBottomStage());
         yield return null;
-        //TODO: NGHIATQ
-        //InvokeRepeating("SpawnBot", LevelManager.spawnRate, LevelManager.spawnRate);
-        SpawnBot();
+        InvokeRepeating("SpawnBot", LevelManager.spawnRate, LevelManager.spawnRate);
         SpawnUser();
     }
 
