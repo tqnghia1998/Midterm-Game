@@ -22,6 +22,8 @@ public class GameplayManager : MonoBehaviour
     GameObject[] spawnPoints, botSpawnPoints;
     Tilemap waterTilemap, steelTilemap;
 
+    Transform enemyHolder;
+
     bool stageStart = false;
     bool tankReserveEmpty = false;
 
@@ -45,6 +47,11 @@ public class GameplayManager : MonoBehaviour
 
         steelTilemap = GameObject.Find("Iron").GetComponent<Tilemap>();
 	    waterTilemap = GameObject.Find("Water").GetComponent<Tilemap>();
+    }
+
+    public void UpdateUserLives()
+    {
+        livesLeft.text = "x" + GameManager.playerLives.ToString();
     }
 
     void Update()
@@ -177,5 +184,35 @@ public class GameplayManager : MonoBehaviour
     {
         tankReserveEmpty = false;
         SceneManager.LoadScene("ScoreScene");
+    }
+
+    public void ActivateFreeze()
+    {
+        StartCoroutine(FreezeActivated());
+    }
+
+    IEnumerator FreezeActivated()
+    {
+        Bot.freezing = true;
+        enemyHolder = GameObject.Find("EnemyHolder").transform;
+
+        for (int i = 0; i < enemyHolder.childCount; i++)
+        {
+            enemyHolder.GetChild(i).gameObject.SetActive(false);
+            enemyHolder.GetChild(i).gameObject.GetComponent<Bot>().ToFreezeTank();
+            enemyHolder.GetChild(i).gameObject.GetComponent<Bot>().enabled = false;
+            enemyHolder.GetChild(i).gameObject.SetActive(true);
+        }
+
+        yield return new WaitForSeconds(10);
+
+        for (int i = 0; i < enemyHolder.childCount; i++)
+        {
+            enemyHolder.GetChild(i).gameObject.SetActive(false);
+            enemyHolder.GetChild(i).gameObject.GetComponent<Bot>().enabled = true;
+            enemyHolder.GetChild(i).gameObject.GetComponent<Bot>().ToUnfreezeTank();
+            enemyHolder.GetChild(i).gameObject.SetActive(true);
+        }
+        Bot.freezing = false;
     }
 }

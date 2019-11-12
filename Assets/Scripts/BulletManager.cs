@@ -6,8 +6,8 @@ public class BulletManager : MonoBehaviour
 {
     [SerializeField]
     GameObject bulletPrefab;
-    GameObject bullet, fireEffect;
-    Bullet logicBullet;
+    GameObject bullet, bullet2, fireEffect;
+    Bullet logicBullet, logicBullet2;
 
     [SerializeField]
     int speed = 1;
@@ -21,19 +21,56 @@ public class BulletManager : MonoBehaviour
         logicBullet.speed = speed;
     }
 
+    public void UpgradeProjectileSpeed()
+    {
+        speed = 20;
+        logicBullet.speed = speed;
+    }
+
+    public void GenerateSecondCanonBall()
+    {
+        bullet2 = Instantiate(bulletPrefab, transform.position, transform.rotation) as GameObject;
+        logicBullet2 = bullet2.GetComponent<Bullet>();
+        logicBullet2.speed = speed;
+    }
+
     public void Fire()
     {
         if (bullet != null)
         {
-            // Nếu đạn đang ẩn
             if (bullet.activeSelf == false)
             {
-                // Hiện nó lên và đặt vào vị trí nòng súng
+                // Hiện đạn thứ nhất lên và đặt vào vị trí nòng súng
                 bullet.transform.position = transform.position;
                 bullet.transform.rotation = transform.rotation;
                 StartCoroutine(ShowFireEffect());
+
                 bullet.SetActive(true);
-            }   
+            }
+            else if (bullet2 != null)
+            {
+                if (bullet2.activeSelf == false)
+                {
+                    // Hiện nó lên và đặt vào vị trí nòng súng
+                    bullet2.transform.position = transform.position;
+                    bullet2.transform.rotation = transform.rotation;
+                    StartCoroutine(ShowFireEffect());
+                    bullet2.SetActive(true);
+                }   
+            }
+        }
+    }
+
+    public void CanonBallPowerUpgrade()
+    {
+        if (bullet != null)
+        {
+            logicBullet.destroyIron = true;
+        }
+
+        if (bullet2 != null)
+        {
+            logicBullet2.destroyIron = true;
         }
     }
 
@@ -49,6 +86,11 @@ public class BulletManager : MonoBehaviour
         if (bullet != null)
         {
             logicBullet.DestroyBullet();
+        }
+
+        if (bullet2 != null)
+        {
+            logicBullet2.DestroyBullet();
         }
     }
 }

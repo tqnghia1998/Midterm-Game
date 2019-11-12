@@ -7,6 +7,10 @@ public class User : Movement
     float horizontal, vertical;
     Rigidbody2D rb2d;
     BulletManager bullet;
+    public int level = 1;
+
+    [SerializeField]
+    Sprite crownSprite, crownGoldSprite, crownDiamondSprite;
 
     void Start ()
     {
@@ -31,6 +35,33 @@ public class User : Movement
         else if (vertical != 0 && !isMoving) 
         {
             StartCoroutine(MoveVertical(vertical, rb2d));
+        }
+    }
+
+    public void UpgradeTank()
+    {
+        if (level < 4)
+        {
+            level++;
+
+            if (level == 2)
+            {
+                transform.Find("Crown").gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                transform.Find("Crown").gameObject.GetComponent<SpriteRenderer>().sprite = crownSprite;
+                bullet.UpgradeProjectileSpeed();
+            }
+            else if (level == 3)
+            {	
+                transform.Find("Crown").gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                transform.Find("Crown").gameObject.GetComponent<SpriteRenderer>().sprite = crownGoldSprite;
+                bullet.GenerateSecondCanonBall();
+            }
+            else if (level == 4)
+            {
+                transform.Find("Crown").gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                transform.Find("Crown").gameObject.GetComponent<SpriteRenderer>().sprite = crownDiamondSprite;
+                bullet.CanonBallPowerUpgrade();
+            }
         }
     }
 

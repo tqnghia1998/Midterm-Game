@@ -13,6 +13,8 @@ public class Health : MonoBehaviour
     Animator anime;
     Rigidbody2D rb2d;
 
+    bool divineIntervention;
+
     void Start()
     {
         SetHealth();
@@ -20,9 +22,12 @@ public class Health : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
     }	
 
-    public void TakeDamage()
+    public void TakeDamage(int damage = 1, bool destroyedByPowerUp = false)
     {
-        if (--currentHealth <= 0)
+        divineIntervention = destroyedByPowerUp;
+        currentHealth -= damage;
+
+        if (currentHealth <= 0)
         {
             rb2d.velocity = Vector2.zero;
             anime.SetTrigger("Killed");
@@ -63,11 +68,14 @@ public class Health : MonoBehaviour
             }
             else if (gameObject.CompareTag("ArmoredTank"))
             {
-                 GameManager.armoredTankDestroyed++;
+                GameManager.armoredTankDestroyed++;
             }
 
-            // Create generate bonus
-            if (gameObject.GetComponent<BonusTank>().IsBonusTankCheck()) GPM.GenerateBonusCrate();
+            if (!divineIntervention)
+            {
+                // Create generate bonus
+                if (gameObject.GetComponent<BonusTank>().IsBonusTankCheck()) GPM.GenerateBonusCrate();
+            }
         }
 
         yield return new WaitForSeconds(0.5F);

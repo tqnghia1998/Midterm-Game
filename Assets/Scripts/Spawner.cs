@@ -14,6 +14,8 @@ public class Spawner : MonoBehaviour
     [SerializeField]
     GameObject userTank, fastTank, bigTank, armoredTank;
 
+    Transform enemyHolder;
+
     enum tankType
     {
         fastTank, bigTank, armoredTank
@@ -21,6 +23,8 @@ public class Spawner : MonoBehaviour
 
     void Start()
     {
+        enemyHolder = GameObject.Find("EnemyHolder").transform;
+
         if (isPlayer)
         {
             tanks = new GameObject[1] 
@@ -45,6 +49,7 @@ public class Spawner : MonoBehaviour
         if (!isPlayer)
         {
             List<int> tankToSpawn = new List<int>();
+            tankToSpawn.Clear();
 
             if (LevelManager.fastTanks > 0)
             {
@@ -67,6 +72,7 @@ public class Spawner : MonoBehaviour
 
             int tankID = tankToSpawn[Random.Range(0, tankToSpawn.Count - 1)];
             tank = Instantiate(tanks[tankID], transform.position, transform.rotation);
+            tank.transform.SetParent(enemyHolder);
 
             // Random bonus tank
             if (Random.value <= 0.5)
@@ -99,6 +105,14 @@ public class Spawner : MonoBehaviour
         if (tank != null)
         {
             tank.SetActive(true);
+
+            if (Bot.freezing == true)
+            {
+                tank.SetActive(false);
+                tank.GetComponent<Bot>().ToFreezeTank();
+                tank.GetComponent<Bot>().enabled = false;
+                tank.SetActive(true);
+            }
         }
     }
 

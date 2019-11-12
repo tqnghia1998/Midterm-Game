@@ -60,9 +60,17 @@
      <Compile Include="Assets\Scripts\Eagle.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GameplayManager.cs" />
+     <Compile Include="Assets\Scripts\GridMap.cs" />
      <Compile Include="Assets\Scripts\Health.cs" />
      <Compile Include="Assets\Scripts\LevelManager.cs" />
      <Compile Include="Assets\Scripts\Movement.cs" />
+     <Compile Include="Assets\Scripts\PowerUps.cs" />
+     <Compile Include="Assets\Scripts\PU1Up.cs" />
+     <Compile Include="Assets\Scripts\PUGrenade.cs" />
+     <Compile Include="Assets\Scripts\PUHelmet.cs" />
+     <Compile Include="Assets\Scripts\PULevelUp.cs" />
+     <Compile Include="Assets\Scripts\PUShovel.cs" />
+     <Compile Include="Assets\Scripts\PUStopwatch.cs" />
      <Compile Include="Assets\Scripts\Spawner.cs" />
      <Compile Include="Assets\Scripts\TallyScore.cs" />
      <Compile Include="Assets\Scripts\User.cs" />

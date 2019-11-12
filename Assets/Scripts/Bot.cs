@@ -12,6 +12,21 @@ public class Bot : Movement
     LayerMask blockingLayer;
     enum Direction { Up, Down, Left, Right };
 
+    public static bool freezing = false;
+
+    public void ToFreezeTank()
+    {
+        CancelInvoke();
+        StopAllCoroutines();
+    }
+
+    public void ToUnfreezeTank()
+    {
+        isMoving = false;
+        RandomDirection();
+        Invoke("AutoFire", Random.Range(0.5f, 1));     
+    }
+
     void Start()
     {
         bullet = GetComponentInChildren<BulletManager>();
@@ -93,7 +108,11 @@ public class Bot : Movement
     {
         // Khi gặp vật cản thì random hướng ngay lập tức (không cần chờ interval)
         RandomDirection();
-        rb2d.velocity = Vector3.zero;
+        
+        if (rb2d != null)
+        {
+            rb2d.velocity = Vector3.zero;
+        }
     }
 
     // Dùng Fixed Update vì phải chờ tính toán xong
