@@ -4,20 +4,19 @@ using UnityEngine;
 
 public abstract class Movement : MonoBehaviour
 {
-    public int speed = 5;
+    public int speed = 4;
     protected bool isMoving = false;
+
+    protected virtual void MoveByPath() {}
 
     protected IEnumerator MoveHorizontal(float movementHorizontal, Rigidbody2D rb2d)
     {
-        // Đánh dấu đang di chuyển
         isMoving = true;
 
-        // Làm tròn vị trí để dễ xử lý
-        transform.position = new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y));
-
-        // Xoay trước khi di chuyển (movementHorizontal = 1 nếu sang trái, -1 nếu sang phải)
         Quaternion rotation = Quaternion.Euler(0, 0, -movementHorizontal * 90f);
         transform.rotation = rotation;
+
+        var backUp = transform.position.x;
         
         float movementProgress = 0f;
         Vector2 movement, endPos;
@@ -31,21 +30,21 @@ public abstract class Movement : MonoBehaviour
 
             if (movementProgress == 1)
             {
-                endPos = new Vector2(Mathf.Round(endPos.x), endPos.y);
+                endPos = new Vector2(backUp + movementHorizontal, endPos.y);
             }
+
             rb2d.MovePosition(endPos);
-            
+
             yield return new WaitForFixedUpdate();
         }
 
         isMoving = false;
+        MoveByPath();
     }
 
     protected IEnumerator MoveVertical(float movementVertical, Rigidbody2D rb2d)
     {
         isMoving = true;
-
-        transform.position = new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y));
 
         Quaternion rotation;
 
@@ -57,9 +56,12 @@ public abstract class Movement : MonoBehaviour
         {
             rotation = Quaternion.Euler(0, 0, 0);
         }
+
         transform.rotation = rotation;
 
-        float movementProgress = 0f;       
+        var backUp = transform.position.y;
+
+        float movementProgress = 0f;
         Vector2 endPos, movement;
  
         while (movementProgress < Mathf.Abs(movementVertical))
@@ -70,11 +72,17 @@ public abstract class Movement : MonoBehaviour
             movement = new Vector2(0f, speed * Time.deltaTime * movementVertical);
             endPos = rb2d.position + movement;
             
-            if (movementProgress == 1) endPos = new Vector2(endPos.x, Mathf.Round(endPos.y));
+            if (movementProgress == 1)
+            {
+                endPos = new Vector2(endPos.x, backUp + movementVertical);
+            }
+
             rb2d.MovePosition(endPos);
+
             yield return new WaitForFixedUpdate();
         }
 
         isMoving = false;
+        MoveByPath();
     }
 }

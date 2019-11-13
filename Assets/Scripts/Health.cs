@@ -52,6 +52,7 @@ public class Health : MonoBehaviour
         // Khi user chết thì sinh ra mới nếu còn mạng
         if (gameObject.CompareTag("UserTank"))
         {
+            GameManager.playerLevel = 1;
             GPM.SpawnUser();
         }
 

@@ -108,10 +108,10 @@ public class Spawner : MonoBehaviour
 
             if (Bot.freezing == true)
             {
-                tank.SetActive(false);
+                // tank.SetActive(false);
                 tank.GetComponent<Bot>().ToFreezeTank();
-                tank.GetComponent<Bot>().enabled = false;
-                tank.SetActive(true);
+                // tank.GetComponent<Bot>().enabled = false;
+                // tank.SetActive(true);
             }
         }
     }

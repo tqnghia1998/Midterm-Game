@@ -127,6 +127,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 3733928777083064829, guid: 95a78b70467157145a76036a32bd4d45,
     type: 3}
   speed: 15
+  level: 1
 --- !u!1 &4337719557703769086
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,7 +229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4337719557829775084
 Transform:
   m_ObjectHideFlags: 0
@@ -238,7 +239,7 @@ Transform:
   m_GameObject: {fileID: 4337719557829775121}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4337719557703769081}
   - {fileID: 4337719557669059453}
@@ -270,10 +271,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb437172fe046341bb4d6d9f8eacd01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
+  speed: 1
   blockingLayer:
     serializedVersion: 2
     m_Bits: 768
+  path: []
+  destination: {x: 0, y: 0}
+  flag: 0
 --- !u!114 &4337719557829775085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,7 +303,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 4337719557829775121}
   m_BodyType: 0
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
@@ -334,7 +338,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.25, y: 2}
+  m_Size: {x: 1.5, y: 2}
   m_EdgeRadius: 0
 --- !u!95 &974701310
 Animator:

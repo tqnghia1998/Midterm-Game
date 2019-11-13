@@ -64,6 +64,7 @@
      <Compile Include="Assets\Scripts\Health.cs" />
      <Compile Include="Assets\Scripts\LevelManager.cs" />
      <Compile Include="Assets\Scripts\Movement.cs" />
+     <Compile Include="Assets\Scripts\PathFinding\AStar.cs" />
      <Compile Include="Assets\Scripts\PowerUps.cs" />
      <Compile Include="Assets\Scripts\PU1Up.cs" />
      <Compile Include="Assets\Scripts\PUGrenade.cs" />

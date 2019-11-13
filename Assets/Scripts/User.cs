@@ -12,15 +12,45 @@ public class User : Movement
     [SerializeField]
     Sprite crownSprite, crownGoldSprite, crownDiamondSprite;
 
+    bool flag = false;
+
     void Start ()
     {
         bullet = GetComponentInChildren<BulletManager>();
         rb2d = GetComponent<Rigidbody2D>();
+
+        if (GameManager.playerLevel > 1)
+        {
+            transform.Find("Crown").gameObject.GetComponent<SpriteRenderer>().sprite = crownSprite;
+            bullet.level = 2;
+
+            if (GameManager.playerLevel > 2)
+            {
+                transform.Find("Crown").gameObject.GetComponent<SpriteRenderer>().sprite = crownGoldSprite;
+                bullet.level = 3;
+                
+                if (GameManager.playerLevel > 3)
+                {
+                    transform.Find("Crown").gameObject.GetComponent<SpriteRenderer>().sprite = crownDiamondSprite;
+                    bullet.level = 4;
+                }
+            }
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        rb2d.velocity = Vector3.zero;
+        if (rb2d != null)
+        {
+            rb2d.velocity = Vector3.zero;
+            flag = true;
+
+            float currX = transform.position.x;
+            float currY = transform.position.y;
+
+            // Round to nearest .5
+            transform.position = new Vector2(Mathf.Round(currX * 2) / 2, Mathf.Round(currY * 2) / 2);
+        }
     }
 
     private void FixedUpdate()
@@ -46,19 +76,16 @@ public class User : Movement
 
             if (level == 2)
             {
-                transform.Find("Crown").gameObject.GetComponent<SpriteRenderer>().enabled = true;
                 transform.Find("Crown").gameObject.GetComponent<SpriteRenderer>().sprite = crownSprite;
                 bullet.UpgradeProjectileSpeed();
             }
             else if (level == 3)
             {	
-                transform.Find("Crown").gameObject.GetComponent<SpriteRenderer>().enabled = true;
                 transform.Find("Crown").gameObject.GetComponent<SpriteRenderer>().sprite = crownGoldSprite;
                 bullet.GenerateSecondCanonBall();
             }
             else if (level == 4)
             {
-                transform.Find("Crown").gameObject.GetComponent<SpriteRenderer>().enabled = true;
                 transform.Find("Crown").gameObject.GetComponent<SpriteRenderer>().sprite = crownDiamondSprite;
                 bullet.CanonBallPowerUpgrade();
             }

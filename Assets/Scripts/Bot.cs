@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Bot : Movement
 {
@@ -13,118 +14,130 @@ public class Bot : Movement
     enum Direction { Up, Down, Left, Right };
 
     public static bool freezing = false;
+    public List<Vector2> path;
+    public Vector2 destination;
+
+    public bool flag = false;
 
     public void ToFreezeTank()
     {
-        CancelInvoke();
         StopAllCoroutines();
     }
 
     public void ToUnfreezeTank()
     {
         isMoving = false;
-        RandomDirection();
-        Invoke("AutoFire", Random.Range(0.5f, 1));     
+    }
+
+    public void FindDestination()
+    {
+        string targetName;
+
+        if (gameObject.tag == "BigTank")
+        {
+            targetName = "Eagle";
+        }
+        else
+        {
+            targetName = "UserTank";
+        }
+
+        GameObject target = GameObject.FindGameObjectWithTag(targetName);
+        destination.x = (int)Mathf.Floor(target.transform.position.x);
+        destination.y = (int)Mathf.Floor(target.transform.position.y);
+    }
+
+    public void DrawPath()
+    {
+        Tilemap map = GameObject.Find("Map").GetComponent<Tilemap>();
+        TileBase original = map.GetTile(new Vector3Int(-13, -13, 0));
+
+        for (int i = -13; i < 13; i++)
+        {
+            for (int j = -13; j < 13; j++)
+            {
+                map.SetTile(new Vector3Int(i, j, 0), original);
+            }
+        }
+
+        for (int i = 0; i < path.Count; i++)
+        {
+            map.SetTile(new Vector3Int((int)path[i].x - 13, (int)path[i].y - 13, 0), null);
+        }
+    }
+
+    public void FindPath()
+    {
+        FindDestination();
+        AStar._ReadFromGrid();
+
+        int currX = (int)Mathf.Floor(transform.position.x) + 13;
+        int currY = (int)Mathf.Floor(transform.position.y) + 13;
+        var tempPath = AStar._PathFinding(AStar.nodeData[currX, currY], AStar.nodeData[(int)destination.x + 13, (int)destination.y + 13]);
+        
+        if (tempPath.Count > 0)
+        {
+            tempPath.RemoveAt(tempPath.Count - 1);
+            path = tempPath;
+        }
+        
+        MoveByPath();
     }
 
     void Start()
     {
         bullet = GetComponentInChildren<BulletManager>();
         rb2d = GetComponent<Rigidbody2D>();
+        path = new List<Vector2>();
 
-        // Chọn ngẫu nhiên hướng cho Bot khi mới bắt đầu
-        RandomDirection();
-
-        // Đặt interval bắn đạn cho Bot
-        Invoke("AutoFire", Random.Range(1, 3));
+        InvokeRepeating("AutoFire", 2, 1f);
+        InvokeRepeating("FindPath", 2, 1f);
     }
 
     void AutoFire()
     {
-        bullet.Fire();
-        Invoke("AutoFire", Random.Range(1, 3));
-    }
-
-    public void RandomDirection()
-    {
-        // Hủy các interval random hướng hiện tại
-        CancelInvoke("RandomDirection");
-        
-        // Tạo danh sách các hướng hợp lệ có thể chọn
-        List<Direction> ranDirection = new List<Direction>();
-
-        // Xác định xem liệu hướng hiện tại đang xét có hợp lệ không bằng cách thử di chuyển một bước
-        if (!Physics2D.Linecast(transform.position, (Vector2)transform.position + new Vector2(1, 0), blockingLayer))
+        if (!Bot.freezing)
         {
-            ranDirection.Add(Direction.Right);
+            bullet.Fire();
         }
-        if (!Physics2D.Linecast(transform.position, (Vector2)transform.position + new Vector2(-1, 0), blockingLayer))
-        {
-            ranDirection.Add(Direction.Left);
-        }
-        if (!Physics2D.Linecast(transform.position, (Vector2)transform.position + new Vector2(0, 1), blockingLayer))
-        {
-            ranDirection.Add(Direction.Up);
-        }
-        if (!Physics2D.Linecast(transform.position, (Vector2)transform.position + new Vector2(0, -1), blockingLayer))
-        {
-            ranDirection.Add(Direction.Down);
-        }
-        
-        // Chọn ngẫu nhiên
-        if (ranDirection.Count == 0)
-        {
-            return;
-        }
-
-        Direction selection = ranDirection[Random.Range(0, ranDirection.Count - 1)];
-        
-        if (selection == Direction.Up)
-        {
-            vertical = 1;
-            horizontal = 0;
-        }
-        if (selection == Direction.Down)
-        {
-            vertical = -1;
-            horizontal = 0;
-        }
-        if (selection == Direction.Right)
-        {
-            vertical = 0;
-            horizontal = 1;
-        }
-        if (selection == Direction.Left)
-        {
-            vertical = 0;
-            horizontal = -1;
-        }
-
-        // Cứ khoảng 3 đến 9s thì sẽ gọi lại hàm
-        Invoke("RandomDirection", Random.Range(3, 5));
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Khi gặp vật cản thì random hướng ngay lập tức (không cần chờ interval)
-        RandomDirection();
-        
         if (rb2d != null)
         {
             rb2d.velocity = Vector3.zero;
+
+            float currX = transform.position.x;
+            float currY = transform.position.y;
+
+            // Round to nearest .5
+            transform.position = new Vector2(Mathf.Round(currX * 2) / 2, Mathf.Round(currY * 2) / 2);
         }
     }
 
-    // Dùng Fixed Update vì phải chờ tính toán xong
-    private void FixedUpdate()
+    protected override void MoveByPath()
     {
-        if (vertical != 0 && isMoving == false)
+        if (path.Count > 0 && !isMoving && !Bot.freezing)
         {
-            StartCoroutine(MoveVertical(vertical, rb2d));
-        }
-        else if (horizontal != 0 && isMoving == false)
-        {
-            StartCoroutine(MoveHorizontal(horizontal, rb2d));
+            int currX = (int)Mathf.Floor(transform.position.x);
+            int currY = (int)Mathf.Floor(transform.position.y);
+
+            int nextX = (int)path[path.Count - 1].x - 13;
+            int nextY = (int)path[path.Count - 1].y - 13;
+
+            if (nextX == currX)
+            {
+                vertical = nextY > currY ? 1: -1;
+                StartCoroutine(MoveVertical(vertical, rb2d));
+            }
+            else if (nextY == currY)
+            {
+                horizontal = nextX > currX ? 1: -1;
+                StartCoroutine(MoveHorizontal(horizontal, rb2d));
+            }
+
+            path.RemoveAt(path.Count - 1);
         }
     }
 }

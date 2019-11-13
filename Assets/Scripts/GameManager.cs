@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static int stageNumber;
     public static int playerLives = 3;
     public static int playerScore = 0;
+    public static int playerLevel = 1;
 
     // Điểm nhận được khi đánh của từng loại tăng
     [SerializeField]

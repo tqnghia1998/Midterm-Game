@@ -13,6 +13,5 @@ public class Eagle : MonoBehaviour
             GameplayManager GPM = GameObject.Find("Canvas").GetComponent<GameplayManager>();
             StartCoroutine(GPM.GameOver());
         }
-
     }
 }

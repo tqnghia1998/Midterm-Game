@@ -18,6 +18,7 @@ TagManager:
   - BigTank
   - ArmoredTank
   - UserTank
+  - Eagle
   layers:
   - Default
   - TransparentFX

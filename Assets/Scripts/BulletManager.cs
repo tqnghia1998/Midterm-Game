@@ -11,6 +11,8 @@ public class BulletManager : MonoBehaviour
 
     [SerializeField]
     int speed = 1;
+    
+    public int level = 1;
 
     void Start () 
     {
@@ -19,6 +21,19 @@ public class BulletManager : MonoBehaviour
         fireEffect = transform.GetChild(0).gameObject;
         logicBullet = bullet.GetComponent<Bullet>();
         logicBullet.speed = speed;
+
+        if (level > 1)
+        {
+            UpgradeProjectileSpeed();
+        }
+        if (level > 2)
+        {
+            GenerateSecondCanonBall();
+        }
+        if (level > 3)
+        {
+            CanonBallPowerUpgrade();
+        }
     }
 
     public void UpgradeProjectileSpeed()
