@@ -29,11 +29,11 @@ public class Bot : Movement
         isMoving = false;
     }
 
-    public void FindDestination()
+    public void FindDestination(string tankTag)
     {
         string targetName;
 
-        if (gameObject.tag == "BigTank")
+        if (tankTag == "BigTank")
         {
             targetName = "Eagle";
         }
@@ -68,12 +68,15 @@ public class Bot : Movement
 
     public void FindPath()
     {
-        FindDestination();
-        AStar._ReadFromGrid();
+        string tankTag = gameObject.tag;
+
+        FindDestination(tankTag);
+        AStar._ReadFromGrid(tankTag);
 
         int currX = (int)Mathf.Floor(transform.position.x) + 13;
         int currY = (int)Mathf.Floor(transform.position.y) + 13;
-        var tempPath = AStar._PathFinding(AStar.nodeData[currX, currY], AStar.nodeData[(int)destination.x + 13, (int)destination.y + 13]);
+
+        var tempPath = AStar._PathFinding(AStar.nodeData[currX, currY], AStar.nodeData[(int)destination.x + 13, (int)destination.y + 13], tankTag);
         
         if (tempPath.Count > 0)
         {
@@ -81,6 +84,7 @@ public class Bot : Movement
             path = tempPath;
         }
         
+        DrawPath();
         MoveByPath();
     }
 
@@ -92,6 +96,7 @@ public class Bot : Movement
 
         InvokeRepeating("AutoFire", 2, 1f);
         InvokeRepeating("FindPath", 2, 1f);
+        InvokeRepeating("AutoCorrectPosition", 5, 5f);
     }
 
     void AutoFire()
@@ -102,17 +107,21 @@ public class Bot : Movement
         }
     }
 
+    private void AutoCorrectPosition()
+    {
+        float currX = transform.position.x;
+        float currY = transform.position.y;
+
+        // Round to nearest .5
+        transform.position = new Vector2(Mathf.Round(currX * 2) / 2, Mathf.Round(currY * 2) / 2);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (rb2d != null)
         {
             rb2d.velocity = Vector3.zero;
-
-            float currX = transform.position.x;
-            float currY = transform.position.y;
-
-            // Round to nearest .5
-            transform.position = new Vector2(Mathf.Round(currX * 2) / 2, Mathf.Round(currY * 2) / 2);
+            AutoCorrectPosition();
         }
     }
 

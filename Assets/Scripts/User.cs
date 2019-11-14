@@ -12,8 +12,6 @@ public class User : Movement
     [SerializeField]
     Sprite crownSprite, crownGoldSprite, crownDiamondSprite;
 
-    bool flag = false;
-
     void Start ()
     {
         bullet = GetComponentInChildren<BulletManager>();
@@ -43,7 +41,8 @@ public class User : Movement
         if (rb2d != null)
         {
             rb2d.velocity = Vector3.zero;
-            flag = true;
+            horizontal = 0;
+            vertical = 0;
 
             float currX = transform.position.x;
             float currY = transform.position.y;
@@ -65,6 +64,11 @@ public class User : Movement
         else if (vertical != 0 && !isMoving) 
         {
             StartCoroutine(MoveVertical(vertical, rb2d));
+        }
+        
+        if (horizontal == 0 && vertical == 0)
+        {
+            rb2d.velocity = Vector3.zero;
         }
     }
 

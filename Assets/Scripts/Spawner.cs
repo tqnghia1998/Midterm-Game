@@ -93,6 +93,10 @@ public class Spawner : MonoBehaviour
             {
                 LevelManager.armoredTanks--;
             }
+
+            // Cập nhật số lượng
+            GameplayManager GPM = GameObject.Find("Canvas").GetComponent<GameplayManager>();
+            GPM.UpdateBotLives();
         }
         else
         {

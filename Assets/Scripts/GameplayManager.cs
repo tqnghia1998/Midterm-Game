@@ -31,12 +31,8 @@ public class GameplayManager : MonoBehaviour
     {
         stageNumberText.text = "STAGE " + GameManager.stageNumber.ToString();
         stageNumberTextIngame.text = "ST. " + GameManager.stageNumber.ToString();
-        livesLeft.text = "x" + GameManager.playerLives.ToString();
-
-        // Lấy danh sách còn lại
-        fastTankLeft.text = "x" + LevelManager.fastTanks.ToString();
-        bigTankLeft.text = "x" + LevelManager.bigTanks.ToString();
-        armoredTankLeft.text = "x" + LevelManager.armoredTanks.ToString();
+        UpdateUserLives();
+        UpdateBotLives();
 
         // Lấy reference
         botSpawnPoints = GameObject.FindGameObjectsWithTag("BotSpawnPoint");
@@ -47,6 +43,13 @@ public class GameplayManager : MonoBehaviour
 
         steelTilemap = GameObject.Find("Iron").GetComponent<Tilemap>();
 	    waterTilemap = GameObject.Find("Water").GetComponent<Tilemap>();
+    }
+
+    public void UpdateBotLives()
+    {
+        fastTankLeft.text = "x" + LevelManager.fastTanks.ToString();
+        bigTankLeft.text = "x" + LevelManager.bigTanks.ToString();
+        armoredTankLeft.text = "x" + LevelManager.armoredTanks.ToString();
     }
 
     public void UpdateUserLives()
@@ -118,9 +121,6 @@ public class GameplayManager : MonoBehaviour
             int spawnPointIndex = Random.Range(0, botSpawnPoints.Length - 1);
             Animator anime = botSpawnPoints[spawnPointIndex].GetComponent<Animator>();
             anime.SetTrigger("Spawning");
-            fastTankLeft.text = "x" + LevelManager.fastTanks.ToString();
-            bigTankLeft.text = "x" + LevelManager.bigTanks.ToString();
-            armoredTankLeft.text = "x" + LevelManager.armoredTanks.ToString();
         }
         else
         {

@@ -23,7 +23,7 @@ public class AStar : MonoBehaviour
         _InitNodeData();
     }
 
-    public static void _ReadFromGrid()
+    public static void _ReadFromGrid(string tankTag = "FastTank")
     {
         GameObject grid = GameObject.Find("Grid");
         iron = GameObject.Find("Iron").GetComponent<Tilemap>();
@@ -53,7 +53,11 @@ public class AStar : MonoBehaviour
                 {
                     if (((i == 11 || i == 14) && (j == 0 || j == 1 || j == 2)) || (j == 2 && (i == 12 || i == 13)))
                     {
-
+                        // Only big tank can access to eagle
+                        if (tankTag != "BigTank")
+                        {
+                            AStar.gridData[i, j] = 1;
+                        }
                     }
                     else
                     {
@@ -88,7 +92,7 @@ public class AStar : MonoBehaviour
         _ReadFromGrid();
     }
 
-    public static List<Vector2> _PathFinding(Node start, Node end)
+    public static List<Vector2> _PathFinding(Node start, Node end, string tankTag)
     {
         List<Vector2> path = new List<Vector2>();
 
@@ -107,7 +111,19 @@ public class AStar : MonoBehaviour
 
         while (open.Count > 0)
         {
-            Node current = AStar._MinF(open);
+            Node current;
+
+            // Find longest route if fast tank
+            if (tankTag == "FastTank")
+            {
+                current = AStar._MaxF(open);
+            }
+
+            // Find shortest route if big tank or armored tank
+            else
+            {
+                current = AStar._MinF(open);
+            }
 
             open.Remove(current);
             current.inside = 0;
@@ -236,6 +252,21 @@ public class AStar : MonoBehaviour
         }
 
         return minF;
+    }
+
+    public static Node _MaxF(List<Node> open)
+    {
+        Node maxF = open[0];
+        
+        for (int i = 1; i < open.Count; i++)
+        {
+            if (maxF.f < open[i].f)
+            {
+                maxF = open[i];
+            }
+        }
+
+        return maxF;
     }
 
     public static float _Cost(Vector2 a, Vector2 b)
