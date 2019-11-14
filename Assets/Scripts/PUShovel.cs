@@ -14,8 +14,10 @@ public class PUShovel : PowerUps
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        endSound.Play();
         GridMap gridmap = grid.GetComponent<GridMap>();
         gridmap.ActivateSpadePower();
-        Destroy(this.gameObject);
+        transform.position = new Vector3(-100, -100, 0);
+        StartCoroutine(DestroyObject());
     }
 }

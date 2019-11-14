@@ -8,6 +8,8 @@ public class GridMap : MonoBehaviour
     [SerializeField]
     Tilemap brickTileMap, steelTileMap, tilePaletteTileMap;
 
+    public AudioSource shovelDoneSound;
+
     void UpdateAndRemoveTile(Vector3 position, TileBase tile, Tilemap tileMapToRemoveFrom, Tilemap tileMapToUpdate)
     {   
         if (!(tileMapToRemoveFrom == steelTileMap && tileMapToRemoveFrom.GetTile(tileMapToRemoveFrom.WorldToCell(position)) == null))
@@ -29,8 +31,9 @@ public class GridMap : MonoBehaviour
         ChangeEagleWallToBrick();
     }
 
-    IEnumerator  ChangeEagleWallToSteel()
+    IEnumerator ChangeEagleWallToSteel()
     {
+        shovelDoneSound.Play();
         Vector3 steelTilePosition = new Vector3(1f, 1f, 0);
         Vector3 brickTilePosition = new Vector3(0f, 0f, 0);
         TileBase steelTile = tilePaletteTileMap.GetTile(tilePaletteTileMap.WorldToCell(steelTilePosition));

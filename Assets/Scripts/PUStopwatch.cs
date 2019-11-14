@@ -14,8 +14,10 @@ public class PUStopwatch : PowerUps
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        endSound.Play();
         GameplayManager GPM = GameObject.Find("Canvas").GetComponent<GameplayManager>();
         GPM.ActivateFreeze();
-        Destroy(this.gameObject);
+        transform.position = new Vector3(-100, -100, 0);
+        StartCoroutine(DestroyObject());
     }
 }

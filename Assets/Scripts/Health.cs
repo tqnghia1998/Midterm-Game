@@ -9,6 +9,7 @@ public class Health : MonoBehaviour
 
     [SerializeField]
     public bool isPlayer;
+    public AudioSource deadSound;
 
     Animator anime;
     Rigidbody2D rb2d;
@@ -20,7 +21,7 @@ public class Health : MonoBehaviour
         SetHealth();
         anime = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
-    }	
+    }
 
     public void TakeDamage(int damage = 1, bool destroyedByPowerUp = false)
     {
@@ -29,9 +30,15 @@ public class Health : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            rb2d.velocity = Vector2.zero;
-            anime.SetTrigger("Killed");
-            StartCoroutine(Death());
+            if (currentHealth > -500)
+            {
+                currentHealth = -500;
+                anime.SetTrigger("Killed");
+                StartCoroutine(Death());
+            }
+
+            rb2d.velocity = Vector3.zero;
+            gameObject.GetComponent<Bot>().ToFreezeTank();
         }
     }
 
@@ -79,9 +86,20 @@ public class Health : MonoBehaviour
             }
         }
 
+        deadSound.Play();
         yield return new WaitForSeconds(0.5F);
 
         Destroy(gameObject);
     }
 
+    public void IntervalRestoreHealth()
+    {
+        StartCoroutine(RestoreHealth());
+    }
+
+    private IEnumerator RestoreHealth()
+    {
+        yield return new WaitForSeconds(10F);
+        SetHealth();
+    }
 }

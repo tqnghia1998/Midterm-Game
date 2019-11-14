@@ -22,6 +22,8 @@ public class GameplayManager : MonoBehaviour
     GameObject[] spawnPoints, botSpawnPoints;
     Tilemap waterTilemap, steelTilemap;
 
+    public AudioSource theme;
+
     Transform enemyHolder;
     
     bool stageStart = false;
@@ -149,6 +151,8 @@ public class GameplayManager : MonoBehaviour
         yield return null;
         InvokeRepeating("SpawnBot", LevelManager.spawnRate, LevelManager.spawnRate);
         SpawnUser();
+        yield return new WaitForSeconds(2);
+        theme.Play();
     }
 
     IEnumerator RevealTopStage()
@@ -185,7 +189,7 @@ public class GameplayManager : MonoBehaviour
         tankReserveEmpty = false;
         User player = GameObject.FindGameObjectWithTag("UserTank").GetComponent<User>();
         GameManager.playerLevel = player.level;
-        SceneManager.LoadScene("ScoreScene");
+        SceneManager.LoadScene("Score Screen");
     }
 
     public void ActivateFreeze()

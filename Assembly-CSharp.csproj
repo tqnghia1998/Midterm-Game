@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\AudioManager.cs" />
      <Compile Include="Assets\Scripts\BonusTank.cs" />
      <Compile Include="Assets\Scripts\Bot.cs" />
      <Compile Include="Assets\Scripts\Bullet.cs" />
@@ -63,8 +64,11 @@
      <Compile Include="Assets\Scripts\GridMap.cs" />
      <Compile Include="Assets\Scripts\Health.cs" />
      <Compile Include="Assets\Scripts\LevelManager.cs" />
+     <Compile Include="Assets\Scripts\MainMenu.cs" />
      <Compile Include="Assets\Scripts\Movement.cs" />
+     <Compile Include="Assets\Scripts\OptionsMenu.cs" />
      <Compile Include="Assets\Scripts\PathFinding\AStar.cs" />
+     <Compile Include="Assets\Scripts\PauseMenu.cs" />
      <Compile Include="Assets\Scripts\PowerUps.cs" />
      <Compile Include="Assets\Scripts\PU1Up.cs" />
      <Compile Include="Assets\Scripts\PUGrenade.cs" />
@@ -75,6 +79,10 @@
      <Compile Include="Assets\Scripts\Spawner.cs" />
      <Compile Include="Assets\Scripts\TallyScore.cs" />
      <Compile Include="Assets\Scripts\User.cs" />
+     <None Include="Assets\Udemy UI Starter\Font\About.txt" />
+     <None Include="Assets\Udemy UI Starter\Font\OFL.txt" />
+     <None Include="Assets\Udemy UI Starter\Font\Try_BebasNeuePro.txt" />
+     <None Include="Assets\Udemy UI Starter\Font\OFL-FAQ.txt" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>D:/Desktop/Midterm Game/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>

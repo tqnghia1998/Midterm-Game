@@ -51,16 +51,26 @@ public class TallyScore : MonoBehaviour
         totalTanksDestroyed.text = (GameManager.fastTankDestroyed + GameManager.bigTankDestroyed + GameManager.armoredTankDestroyed).ToString();
         GameManager.playerScore += (fastTankScore + bigTankScore + armoredTankScore);
         playerScoreText.text = GameManager.playerScore.ToString();
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(8f);
 
         if (GameManager.stageCleared)
         {
             ClearStatistics();
-            SceneManager.LoadScene("Stage " + (GameManager.stageNumber + 1));
+
+            if (GameManager.stageNumber + 1 <= 2)
+            {
+                SceneManager.LoadScene("Stage " + (GameManager.stageNumber + 1));
+            }
+            else
+            {
+                SceneManager.LoadScene("Main Menu");
+            }
         }
         else
         {
             ClearStatistics();
+
+            SceneManager.LoadScene("Main Menu");
         }
     }
 

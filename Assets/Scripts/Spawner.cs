@@ -14,6 +14,8 @@ public class Spawner : MonoBehaviour
     [SerializeField]
     GameObject userTank, fastTank, bigTank, armoredTank;
 
+    public AudioSource spawnSound;
+
     Transform enemyHolder;
 
     enum tankType
@@ -70,6 +72,13 @@ public class Spawner : MonoBehaviour
                 return;
             }
 
+            // Kiểm tra xung đột trước khi spawn
+            // if (Physics.CheckSphere(transform.position, 5))
+            // {
+            //     Debug.Log("Suspend spawning because collision");
+            //     return;
+            // }
+
             int tankID = tankToSpawn[Random.Range(0, tankToSpawn.Count - 1)];
             tank = Instantiate(tanks[tankID], transform.position, transform.rotation);
             tank.transform.SetParent(enemyHolder);
@@ -102,6 +111,8 @@ public class Spawner : MonoBehaviour
         {
             tank = Instantiate(tanks[0], transform.position, transform.rotation);
         }
+
+        spawnSound.Play();
     }
 
     public void SpawnNewTank()

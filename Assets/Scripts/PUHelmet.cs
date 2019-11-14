@@ -11,7 +11,10 @@ public class PUHelmet : PowerUps
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        endSound.Play();
         collision.gameObject.GetComponent<Animator>().SetTrigger("Invincible");
-        Destroy(this.gameObject);
+        collision.gameObject.GetComponent<Health>().IntervalRestoreHealth();
+        transform.position = new Vector3(-100, -100, 0);
+        StartCoroutine(DestroyObject());
     }
 }

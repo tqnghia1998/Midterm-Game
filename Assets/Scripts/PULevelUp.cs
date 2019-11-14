@@ -11,7 +11,9 @@ public class PULevelUp : PowerUps
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        endSound.Play();
         collision.gameObject.GetComponent<User>().UpgradeTank();
-        Destroy(this.gameObject);
+        transform.position = new Vector3(-100, -100, 0);
+        StartCoroutine(DestroyObject());
     }
 }

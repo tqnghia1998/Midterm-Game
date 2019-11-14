@@ -9,6 +9,8 @@ public class BulletManager : MonoBehaviour
     GameObject bullet, bullet2, fireEffect;
     Bullet logicBullet, logicBullet2;
 
+    public AudioSource fireSound;
+
     [SerializeField]
     int speed = 1;
     
@@ -59,8 +61,8 @@ public class BulletManager : MonoBehaviour
                 bullet.transform.position = transform.position;
                 bullet.transform.rotation = transform.rotation;
                 StartCoroutine(ShowFireEffect());
-
                 bullet.SetActive(true);
+                fireSound.Play();
             }
             else if (bullet2 != null)
             {
@@ -71,6 +73,7 @@ public class BulletManager : MonoBehaviour
                     bullet2.transform.rotation = transform.rotation;
                     StartCoroutine(ShowFireEffect());
                     bullet2.SetActive(true);
+                fireSound.Play();
                 }   
             }
         }

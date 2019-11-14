@@ -76,7 +76,10 @@ public class Bot : Movement
         int currX = (int)Mathf.Floor(transform.position.x) + 13;
         int currY = (int)Mathf.Floor(transform.position.y) + 13;
 
-        var tempPath = AStar._PathFinding(AStar.nodeData[currX, currY], AStar.nodeData[(int)destination.x + 13, (int)destination.y + 13], tankTag);
+        int tarrX = (int)destination.x + 13;
+        int tarrY = (int)destination.y + 13;
+
+        var tempPath = AStar._PathFinding(AStar.nodeData[currX, currY], AStar.nodeData[tarrX, tarrY], tankTag);
         
         if (tempPath.Count > 0)
         {

@@ -13,13 +13,15 @@ public class PUGrenade : PowerUps
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        endSound.Play();
         enemyHolder = GameObject.Find("EnemyHolder");
         Health[] enemiesHealthScript = enemyHolder.GetComponentsInChildren<Health>(true);
 
         foreach (Health enemyHealthScript in enemiesHealthScript)
         {
-            enemyHealthScript.TakeDamage(1000, true);
+            enemyHealthScript.TakeDamage(200, true);
         }
-        Destroy(this.gameObject);
+        transform.position = new Vector3(-100, -100, 0);
+        StartCoroutine(DestroyObject());
     }
 }
