@@ -22,18 +22,18 @@ public class LevelManager : MonoBehaviour
             bigTanks = GameManager.customBigTanks;
             armoredTanks = GameManager.customArmoredTanks;
 
-            if (GameManager.customFastTanks == 0)
-            {
-                fastTanks = fastTanksInThisLevel;
-            }
-            if (GameManager.customBigTanks == 0)
-            {
-                bigTanks = bigTanksInThisLevel;
-            }
-            if (GameManager.customArmoredTanks == 0)
-            {
-                armoredTanks = armoredTanksInThisLevel;
-            }
+            // if (GameManager.customFastTanks == 0)
+            // {
+            //     fastTanks = fastTanksInThisLevel;
+            // }
+            // if (GameManager.customBigTanks == 0)
+            // {
+            //     bigTanks = bigTanksInThisLevel;
+            // }
+            // if (GameManager.customArmoredTanks == 0)
+            // {
+            //     armoredTanks = armoredTanksInThisLevel;
+            // }
         }
         else
         {

@@ -40,9 +40,9 @@ public class DevScreen : MonoBehaviour
         GameManager.itemShovel = shovel.isOn;
         GameManager.itemStopwatch = stopwatch.isOn;
 
-        int customFastTanks = 0;
-        int customBigTanks = 0;
-        int customArmoredTanks = 0;
+        int customFastTanks = 1;
+        int customBigTanks = 1;
+        int customArmoredTanks = 1;
 
         int.TryParse(fastTankInput.text, out customFastTanks);
         int.TryParse(bigTankInput.text, out customBigTanks);

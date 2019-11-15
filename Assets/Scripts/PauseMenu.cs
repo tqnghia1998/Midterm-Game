@@ -15,6 +15,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject loadingScreen, loadingIcon;
     public Text loadingText;
     public AudioSource sfx;
+    private bool inLoadingScreen = false;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +28,14 @@ public class PauseMenu : MonoBehaviour
     {
         if (canUseEsc && Input.GetKeyDown(KeyCode.Escape))
         {
-            PauseUnpause();
+            if (inLoadingScreen)
+            {
+                SceneManager.LoadScene("Main Menu");
+            }
+            else
+            {
+                PauseUnpause();
+            }
         }
     }
 
@@ -60,32 +68,37 @@ public class PauseMenu : MonoBehaviour
     public void QuitToMainMenu()
     {
         canUseEsc = false;
-        StartCoroutine(LoadMain());
+        SceneManager.LoadScene("Main Menu");
+        // StartCoroutine(LoadMain());
     }
 
     public IEnumerator LoadMain()
     {
+        inLoadingScreen = true;
         loadingScreen.SetActive(true);
 
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(mainMenuScene);
-        asyncLoad.allowSceneActivation = false;
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene("Main Menu");
 
-        while (asyncLoad.isDone == false)
-        {
-            if (asyncLoad.progress >= 0.9F)
-            {
-                loadingText.text = "Press any key to continue";
-                loadingIcon.SetActive(false);
+        // AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(mainMenuScene);
+        // asyncLoad.allowSceneActivation = false;
 
-                if (Input.anyKeyDown == true)
-                {
-                    asyncLoad.allowSceneActivation = true;
-                    Time.timeScale = 1.0F;
-                }
-            }
+        // while (asyncLoad.isDone == false)
+        // {
+        //     if (asyncLoad.progress >= 0.9F)
+        //     {
+        //         loadingText.text = "Press any key to continue";
+        //         loadingIcon.SetActive(false);
 
-            yield return null;
-        }
+        //         if (Input.anyKeyDown == true)
+        //         {
+        //             asyncLoad.allowSceneActivation = true;
+        //             Time.timeScale = 1.0F;
+        //         }
+        //     }
+
+        //     yield return null;
+        // }
     }
 
     public void playSfx()
