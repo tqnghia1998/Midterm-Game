@@ -15,9 +15,33 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         GameManager.stageNumber = stageNumber;
-        fastTanks = fastTanksInThisLevel;
-        bigTanks = bigTanksInThisLevel;
-        armoredTanks = armoredTanksInThisLevel;
+
+        if (GameManager.isCustomTanks == true)
+        {
+            fastTanks = GameManager.customFastTanks;
+            bigTanks = GameManager.customBigTanks;
+            armoredTanks = GameManager.customArmoredTanks;
+
+            if (GameManager.customFastTanks == 0)
+            {
+                fastTanks = fastTanksInThisLevel;
+            }
+            if (GameManager.customBigTanks == 0)
+            {
+                bigTanks = bigTanksInThisLevel;
+            }
+            if (GameManager.customArmoredTanks == 0)
+            {
+                armoredTanks = armoredTanksInThisLevel;
+            }
+        }
+        else
+        {
+            fastTanks = fastTanksInThisLevel;
+            bigTanks = bigTanksInThisLevel;
+            armoredTanks = armoredTanksInThisLevel;
+        }
+        
         spawnRate = spawnRateInThisLevel;
     }
 }

@@ -75,7 +75,46 @@ public class GameplayManager : MonoBehaviour
 
     public void GenerateBonusCrate()
     {
-        GameObject bonusCrate = bonusCrates[Random.Range(0, bonusCrates.Length - 1)];
+        List<int> list = new List<int>();
+
+        if (GameManager.itemOneUp)
+        {
+            list.Add(0);
+        }
+
+        if (GameManager.itemLevelUp)
+        {
+            list.Add(1);
+        }
+
+        if (GameManager.itemGrenade)
+        {
+            list.Add(2);
+        }
+
+        if (GameManager.itemHelmet)
+        {
+            list.Add(3);
+        }
+
+        if (GameManager.itemShovel)
+        {
+            list.Add(4);
+        }
+
+        if (GameManager.itemStopwatch)
+        {
+            list.Add(5);
+        }
+
+        int index = list[Random.Range(0, list.Count - 1)];
+
+        if (index >= bonusCrates.Length)
+        {
+            return;
+        }
+
+        GameObject bonusCrate = bonusCrates[index];
         Vector3 cratePosition = new Vector3(Random.Range(-12, 12), Random.Range(-12, 13), 0);
         if (IsInvalidBonusCratePosition(cratePosition))
         {

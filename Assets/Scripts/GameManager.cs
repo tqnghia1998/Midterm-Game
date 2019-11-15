@@ -20,6 +20,15 @@ public class GameManager : MonoBehaviour
 
     public static bool stageCleared = false;
 
+    // Dev mode
+    public static bool isShowRoute = false;
+    public static bool isCustomTanks = false;
+    public static int customFastTanks = 0;
+    public static int customBigTanks = 0;
+    public static int customArmoredTanks = 0;
+    public static bool itemOneUp = true, itemLevelUp = true, itemGrenade = true;
+    public static bool itemShovel = true, itemHelmet = true, itemStopwatch = true;
+
     void Awake()
     {
         if (instance == null)

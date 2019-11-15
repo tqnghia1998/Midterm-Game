@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 068def5b8f0d77145a2e7e0f0c06aec4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalHealth: 1
+  totalHealth: 2
   currentHealth: 0
   isPlayer: 0
   deadSound: {fileID: 9091371710196543367}

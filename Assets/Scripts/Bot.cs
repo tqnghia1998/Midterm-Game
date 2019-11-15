@@ -87,7 +87,11 @@ public class Bot : Movement
             path = tempPath;
         }
         
-        DrawPath();
+        if (GameManager.isShowRoute == true)
+        {
+            DrawPath();
+        }
+        
         MoveByPath();
     }
 
@@ -116,7 +120,30 @@ public class Bot : Movement
         float currY = transform.position.y;
 
         // Round to nearest .5
-        transform.position = new Vector2(Mathf.Round(currX * 2) / 2, Mathf.Round(currY * 2) / 2);
+        float willX = (float)(Mathf.Round(currX * 2) / 2);
+        float willY = (float)(Mathf.Round(currY * 2) / 2);
+
+        if (willX <= -12.5f)
+        {
+            willX = -12.5f;
+        }
+
+        if (willX >= 12.5f)
+        {
+            willX = 12.5f;
+        }
+
+        if (willY <= -12.5f)
+        {
+            willY = -12.5f;
+        }
+
+        if (willY >= 12.5f)
+        {
+            willY = 12.5f;
+        }
+
+        transform.position = new Vector2(willX, willY);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

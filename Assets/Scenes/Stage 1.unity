@@ -3275,6 +3275,11 @@ MonoBehaviour:
   armoredTankLeft: {fileID: 4343858685613486113}
   canvas: {fileID: 4343858685767038806}
   bonusCrates:
+  - {fileID: 5624308887169620441, guid: 1e715929307ee0549a6d5b52577abe7c, type: 3}
+  - {fileID: 5940686731328700730, guid: fa80bb1e2c1bf374f85b976fe01fda1e, type: 3}
+  - {fileID: 8579405139094733256, guid: 817856a0973715d43974232451ff6751, type: 3}
+  - {fileID: 9174572420359101490, guid: 5710d21bfe07c7c458fefad2a7d72558, type: 3}
+  - {fileID: 6863164489030807964, guid: d1ab4c8097a8b5d439db6be51e819e15, type: 3}
   - {fileID: 6004953270518962963, guid: 2beb6ce7c635bba43b3c3a904cb732e5, type: 3}
   theme: {fileID: 1496817895}
 --- !u!114 &4343858685767038813
@@ -3291,7 +3296,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   optionsScreen: {fileID: 8869008956061839805}
   pauseScreen: {fileID: 6731763634901488299}
-  mainMenuScene: 
+  mainMenuScene: Main Menu
   isPause: 0
   canUseEsc: 0
   loadingScreen: {fileID: 6731763635754068406}

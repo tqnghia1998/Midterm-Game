@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
     public string firstLevel;
-    public GameObject optionsScreen;
+    public GameObject optionsScreen, devModeScreen;
     public GameObject loadingScreen, loadingIcon;
     public Text loadingText;
     public AudioSource sfx;
@@ -32,6 +32,16 @@ public class MainMenu : MonoBehaviour
     public void OpenOptions()
     {
         optionsScreen.SetActive(true);
+    }
+
+    public void OpenDevMode()
+    {
+        devModeScreen.SetActive(true);
+    }
+
+    public void CloseDevMode()
+    {
+        devModeScreen.SetActive(false);
     }
 
     public void CloseOptions()
